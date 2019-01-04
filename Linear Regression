@@ -1,0 +1,35 @@
+import matplotlib.pylab as plt  //画图工具
+import numpy as np
+import pandas as pd
+import xlrd     //pandas读取excel文档时候需要用xlrd
+from sklearn import datasets,linear_model
+data=pd.read_excel('.\CCPP\Folds5x2_pp.xlsx')
+print(data.head())
+x=data[['AT','V','AP','RH']]    //开头直接代表正义列的向量
+y=data[['PE']]
+
+from sklearn.model_selection import train_test_split    //此功能用于将数据分为测试集与验证集。通用的是selection
+x_train,x_test,y_train,y_test=train_test_split(x,y,random_state=1)
+print(x_train.shape)
+print(y_train.shape)
+print(x_test.shape)
+print(y_test.shape)
+
+from sklearn.linear_model import LinearRegression       //线性回归的拟合  linear中的东西 linear_model
+linreg=LinearRegression()
+linreg.fit(x_train,y_train)
+print(linreg.intercept_)
+print(linreg.coef_)
+
+y_pred=linreg.predict(x_test)   //metrics
+from sklearn import metrics
+print("MSE:",np.sqrt(metrics.mean_squared_error(y_test,y_pred)))
+
+from sklearn.model_selection import cross_val_predict
+predicted=cross_val_predict(linreg,x,y,cv=10)
+ax=plt.subplot()
+ax.scatter(y,predicted)
+ax.plot([y.min(),y.max()],[y.min(),y.max()],'k--',lw=4)
+ax.set_xlabel('Measured')
+ax.set_ylabel('predicted')
+plt.show()
