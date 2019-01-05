@@ -17,8 +17,8 @@ print(y_test.shape)
 
 from sklearn.linear_model import LinearRegression       //线性回归的拟合  linear中的东西 linear_model
 linreg=LinearRegression()
-linreg.fit(x_train,y_train)
-print(linreg.intercept_)
+linreg.fit(x_train,y_train)   //用fit来实际进行线性回归过程
+print(linreg.intercept_)    //线性回归参数分为两部分，一部分为系数，一部分为截距
 print(linreg.coef_)
 
 y_pred=linreg.predict(x_test)   //metrics
